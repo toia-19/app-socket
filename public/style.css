@@ -9,9 +9,23 @@
 }
 
 .container {
-    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+}
+
+.pantalla {
+    width: 100%;
+    height: 100%;
     text-align: center;
-    justify-content: center;
+    background-color: #ffffff;
+    padding-right: 5px;
+}
+
+.cola {
+    width: 60%;
+    height: 100%;
+    text-align: start;
 }
 
 h1 {
@@ -28,7 +42,6 @@ h1 {
 .boton{
     display: flex;
     padding: 10px;
-    margin: auto;
     border-radius: 15px;
     background-color: antiquewhite;
     border-color: antiquewhite;

@@ -7,8 +7,10 @@ function render(data) {
     // map itera sobre cada objeto del arreglo y ejecuta la funcion en ellos
     var html = data.map(function(elem) {
         return (`<div>
-                    <strong>${elem.author}</strong>:
-                    <em>${elem.text}</em>
+                    <h3>${elem.nombre} ${elem.apellido}: ${elem.turno}</h3>
+                </div>
+                <div>
+                    <em>${elem.tiempo}</em>
                 </div>`)
     // 'join' separa los elementos del array con un espacio
     }).join (" ");
@@ -21,8 +23,8 @@ socket.on('messages', function(data) { render(data); });
 function addMessage(e) {
     var mensaje = {
         // Obtenemos valor de los inputs
-        author: document.getElementById('username').value,
-        text: document.getElementById('texto').value
+        nombre: document.getElementById('name').value,
+        apellido: document.getElementById('lastname').value
     };
 
     // Envia a través de socket para que lo escuche el servidor

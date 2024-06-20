@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="public/assets/groups.png" type="image/x-icon">
     <title>App Socket - Chat</title>
 
     <!-- Diseño -->
@@ -15,23 +16,35 @@
 </head>
 <body>
     <div class="container">
-        <h1>Modelo Chat</h1>
+        <div class="pantalla">
+            <h3>NUEVO TURNO</h3>
 
-        <span class="material-symbols-outlined">
-            groups
-        </span>
+            <h1>TURNO</h1>
+            <h1>A1</h1>
 
-        <h2>Conversación local:</h2>
+            <span class="material-symbols-outlined">
+                alarm_on
+            </span>
 
-        <div id="messages" class="msg_local"></div>
+            <h2>Puesto</h2>
+        </div>
 
-        <h2>Conversación web:</h2>
-        <form onsubmit="return addMessage (this)" class="formulario">
-            <input class="info" type="text" id="username" placeholder="Tu nombre:...">
-            <input class="info" type="text" id="texto" placeholder="Cuéntanos algo:...">
+        <div class="cola">
+            <section>
+                <h1>Próximos turnos</h1>
+                <div id="messages" class="msg_local"></div>
+            </section>
 
-            <input type="submit" value="Enviar" class="boton">
-        </form>
+            <section>
+                <h1>Solicitar un nuevo turno</h1>
+                <form onsubmit="return addMessage (this)" class="formulario">
+                    <input class="info" type="text" id="name" placeholder="Tu nombre:...">
+                    <input class="info" type="text" id="lastname" placeholder="Tu apellido:...">
+        
+                    <input type="submit" value="Solicitar" class="boton">
+                </form>
+            </section>
+        </div>
     </div>
 </body>
 </html>

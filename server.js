@@ -10,9 +10,9 @@ app.use(express.static('public'));
 
 // Arreglo de mensajes locales
 let messages = [
-    { author: "Juan", text: "Hola, ¡Qué tal!" },
-    { author: "Pedro", text: "Muy bien, ¿Y vos?" },
-    { author: "Ana", text: "¡Genial!" }
+    { nombre: "Juan", apellido: "Caceres", turno: "AS", tiempo: "Tiempo espera" },
+    { nombre: "Pedro", apellido: "Aguilar", turno: "BS", tiempo: "TIempo espera" },
+    { nombre: "Ana", apellido: "Carreras" , turno: "C1", tiempo: "TIempo espera" }
 ];
 
 // Servidor de websocket atento a posible conexión (pasamos mensaje 'connection')
