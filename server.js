@@ -1,78 +1,38 @@
-// Importamos express como framework sobre NodeJS
 const express = require('express');
-
-// Inicializamos express
 const app = express();
-
-// Pasamos constante app al servidor
-// const http = require('http').Server(app);
-
 const server = require('http').Server(app);
 
-const io = require('socket.io')(server);
+// Servidor de WEBSOCKET
+const io = require('socket.io') (server);
 
-// Indicamos que los archivos estáticos se encontrarán en carpeta 'public'
+// Indicamos ruta donde estarán los ficheros estáticos usando middleware | public tiene index y main
 app.use(express.static('public'));
 
-// Pasamos constante http a Socket para la comunicación bidireccional
-// io = require('socket.io');
-
+// Arreglo de mensajes locales
 let messages = [
-    { author: 'Juan', text: '¡Hola!, ¿Qué tal?'},
-    { author: 'Pedro', text: '¡Muy bien!, ¿Y vos?'},
-    { author: 'Ana', text: '¡Genial!'}
-]
+    { author: "Juan", text: "Hola, ¡Qué tal!" },
+    { author: "Pedro", text: "Muy bien, ¿Y vos?" },
+    { author: "Ana", text: "¡Genial!" }
+];
 
-/*
-    Notificará al cliente cada vez que se detecté una conexión y mostrará por 
-    consola una emisión de los mensajes
-*/
+// Servidor de websocket atento a posible conexión (pasamos mensaje 'connection')
+io.on('connection', function(socket){
+    console.log('¡Un cliente se ha conectado con éxito!');
+    // Enviamos el array de objetos con el evento 'messages'
+    socket.emit('messages', messages)
 
-io.on('connection', function (socket) { 
-    console.log('Un cliente se ha conectado');
-    socket.emit('messages', messages);
-})
+    // Socket escucha evento 'new-message' y cuando llegue trae los datos por 'data'
+    socket.on('new-message', function(data){
+        // Pusheamos el nuevo mensaje ingresado por el usuario
+        messages.push(data);
 
-// Cargamos el 'index.html' como ruta raíz
-app.get('/', (req, res) => {
-    res.sendFile('index.html', {root: __dirname})
-})
-
-// Definimos puerto '3000' por defecto
-// http.listen(3000, () => console.log('SERVER ON'))
-
-// 'connection' se ejecuta la primera vez que se abre una nueva conexión
-io.on('connection', (socket) => { 
-    // ############ Primer bloque
-    // El console.log sólo de imprimirá la primera vez que se abra la conexión
-    // console.log('Usuario conectado');
-
-    // Enviamos mensaje desde nuestro servidor al cliente
-    // socket.emit('Mi mensaje', 'Este es mi mensaje desde el servidor')
-
-    // ############ Segundo bloque
-    console.log('¡Nuevo cliente conectado!');
-
-    // Envío los mensajes al cliente que se conectó
-    socket.emit('Mensajes', messages);
-
-    // Escucho los mensajes enviados por el cliente y se los propago a todos
-    socket.on('Mensajes', data => {
-        mensajes.push({socketid: socket.id, messages: data})
-
-        /*
-        io.socket.emit = envía mensajes globales a todos los clientes 
-        conectados al canal de Websocket
-        */
-        io.socket.emit('Mensajes', messages);
+        /* Usando socket.emit creamos comunicación '1:1', pero la sala de chat es privada
+        por lo que se debe notificar a todos los clientes conectados usando io.sockets.emit*/
+        io.sockets.emit('messages', messages)
     })
 })
 
-// Servidor
-// socket.on('Notificacion', data => {
-//     console.log(data);
-// })
-
-server.listen(8080, () => {
-    console.log('Servidor corriendo en: http://localhost:8080')
+// Servidor corriendo en puerto: 8080
+server.listen(8080, ()=>{
+    console.log('Servidor corriendo en: http://localhost:8080');
 })

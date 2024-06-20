@@ -23,7 +23,15 @@
 
         <h2>Conversación local:</h2>
 
-        <div id="messages"></div>
+        <div id="messages" class="msg_local"></div>
+
+        <h2>Conversación web:</h2>
+        <form onsubmit="return addMessage (this)" class="formulario">
+            <input class="info" type="text" id="username" placeholder="Tu nombre:...">
+            <input class="info" type="text" id="texto" placeholder="Cuéntanos algo:...">
+
+            <input type="submit" value="Enviar" class="boton">
+        </form>
     </div>
 </body>
 </html>
