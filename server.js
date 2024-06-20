@@ -4,14 +4,18 @@ const express = require('express');
 // Inicializamos express
 const app = express();
 
-app.use(express.static('public'));
-
 // Pasamos constante app al servidor
-const http = require('http').Server(app);
+// const http = require('http').Server(app);
 
 const server = require('http').Server(app);
 
-const io = require('socket.io')(http);
+const io = require('socket.io')(server);
+
+// Indicamos que los archivos estáticos se encontrarán en carpeta 'public'
+app.use(express.static('public'));
+
+// Pasamos constante http a Socket para la comunicación bidireccional
+// io = require('socket.io');
 
 let messages = [
     { author: 'Juan', text: '¡Hola!, ¿Qué tal?'},
@@ -24,16 +28,10 @@ let messages = [
     consola una emisión de los mensajes
 */
 
-io.on('connection', function(socket) { 
+io.on('connection', function (socket) { 
     console.log('Un cliente se ha conectado');
     socket.emit('messages', messages);
 })
-
-// Pasamos constante http a Socket para la comunicación bidireccional
-// io = require('socket.io');
-
-// Indicamos que los archivos estáticos se encontrarán en carpeta 'public'
-app.use(express.static('./public'));
 
 // Cargamos el 'index.html' como ruta raíz
 app.get('/', (req, res) => {
@@ -41,7 +39,7 @@ app.get('/', (req, res) => {
 })
 
 // Definimos puerto '3000' por defecto
-http.listen(3000, () => console.log('SERVER ON'))
+// http.listen(3000, () => console.log('SERVER ON'))
 
 // 'connection' se ejecuta la primera vez que se abre una nueva conexión
 io.on('connection', (socket) => { 
@@ -60,7 +58,7 @@ io.on('connection', (socket) => {
 
     // Escucho los mensajes enviados por el cliente y se los propago a todos
     socket.on('Mensajes', data => {
-        messages.push({socketid: socket.id, messages: data})
+        mensajes.push({socketid: socket.id, messages: data})
 
         /*
         io.socket.emit = envía mensajes globales a todos los clientes 
@@ -75,6 +73,6 @@ io.on('connection', (socket) => {
 //     console.log(data);
 // })
 
-server.listen(8080, function () {
-    console.log('Servidor corriendo en http://localhost:8080')
+server.listen(8080, () => {
+    console.log('Servidor corriendo en: http://localhost:8080')
 })
