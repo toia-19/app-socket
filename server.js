@@ -4,11 +4,33 @@ const express = require('express');
 // Inicializamos express
 const app = express();
 
+app.use(express.static('public'));
+
 // Pasamos constante app al servidor
 const http = require('http').Server(app);
 
+const server = require('http').Server(app);
+
+const io = require('socket.io')(http);
+
+let messages = [
+    { author: 'Juan', text: '¡Hola!, ¿Qué tal?'},
+    { author: 'Pedro', text: '¡Muy bien!, ¿Y vos?'},
+    { author: 'Ana', text: '¡Genial!'}
+]
+
+/*
+    Notificará al cliente cada vez que se detecté una conexión y mostrará por 
+    consola una emisión de los mensajes
+*/
+
+io.on('connection', function(socket) { 
+    console.log('Un cliente se ha conectado');
+    socket.emit('messages', messages);
+})
+
 // Pasamos constante http a Socket para la comunicación bidireccional
-io = require('socket.io');
+// io = require('socket.io');
 
 // Indicamos que los archivos estáticos se encontrarán en carpeta 'public'
 app.use(express.static('./public'));
@@ -34,21 +56,25 @@ io.on('connection', (socket) => {
     console.log('¡Nuevo cliente conectado!');
 
     // Envío los mensajes al cliente que se conectó
-    socket.emit('Mensajes', mensajes);
+    socket.emit('Mensajes', messages);
 
     // Escucho los mensajes enviados por el cliente y se los propago a todos
     socket.on('Mensajes', data => {
-        mensajes.push({socketid: socket.id, mensaje: data})
+        messages.push({socketid: socket.id, messages: data})
 
         /*
         io.socket.emit = envía mensajes globales a todos los clientes 
         conectados al canal de Websocket
         */
-        io.socket.emit('Mensajes', mensajes);
+        io.socket.emit('Mensajes', messages);
     })
 })
 
 // Servidor
-socket.on('Notificacion', data => {
-    console.log(data);
+// socket.on('Notificacion', data => {
+//     console.log(data);
+// })
+
+server.listen(8080, function () {
+    console.log('Servidor corriendo en http://localhost:8080')
 })
