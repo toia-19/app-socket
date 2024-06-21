@@ -25,7 +25,7 @@ function iniciarContador() {
 
         // Enviamos el tiempo a los objetos del arreglo 'messages'
         messages.forEach((mensaje) => {
-            mensaje.tiempo = `Tiempo de espera: ${minutos}:${segundos}`;
+            mensaje.tiempo = `Tiempo de espera: ${minutos}m : ${segundos}s`;
         });
     }, 1000); // Intervalo de 1 segundo (1000 milisegundos)
 
