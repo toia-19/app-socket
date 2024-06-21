@@ -14,9 +14,11 @@ function render(data) {
                 </div>`)
     // 'join' separa los elementos del array con un espacio
     }).join (" ");
+
     // se inserta el template en el div de html
     document.getElementById('messages').innerHTML = html;
 }
+// Escucha el evento 'messages' para recibir todos los mensajes
 socket.on('messages', function(data) { render(data); });
 
 // Función addMessage vinculada al formulario
